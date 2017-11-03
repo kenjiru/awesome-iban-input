@@ -1,19 +1,28 @@
 import React, {Component} from 'react';
-import logo from '../logo.svg';
-
-import './App.scss';
+import Iban from '../iban/Iban';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            ibanValue: 'AI1234567890',
+        };
+    }
+
+    handleIbanChange = (ibanValue) => {
+        this.setState({
+            ibanValue,
+        });
+    };
+
     render() {
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
+                <p>Please enter the IBAN number:</p>
+                <Iban value={this.state.ibanValue} onChange={this.handleIbanChange}/>
+
+                <p>Iban value: {this.state.ibanValue}</p>
             </div>
         );
     }
