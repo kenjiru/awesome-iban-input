@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-indent-props */
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import FlashingInput from '../flashing-input/FlashingInput';
 
 const GROUP_SIZE = 4;
 
@@ -53,6 +56,7 @@ class Iban extends Component {
 
         this.state = {
             formattedIban,
+            isValid: true,
         };
     }
 
@@ -93,7 +97,11 @@ class Iban extends Component {
     render() {
         return (
             <div className="iban">
-                <input onChange={this.handleChange} value={this.state.formattedIban} />
+                <FlashingInput
+                    value={this.state.formattedIban}
+                    onChange={this.handleChange}
+                    isValid={this.state.isValid}
+                />
                 {this.renderValidationWarning()}
             </div>
         );

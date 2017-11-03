@@ -1,0 +1,8 @@
+.flashing-input {
+    outline: none;
+    transition: 0.2s ease-out;
+
+    &.is-flashing {
+        border-color: red;
+    }
+}
