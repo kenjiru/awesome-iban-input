@@ -30,16 +30,6 @@ class FlashingInput extends Component {
         }
     }
 
-    getStyle() {
-        if (this.state.isFlashing) {
-            return {
-                borderColor: 'red',
-            };
-        }
-
-        return {};
-    }
-
     getClassName() {
         return className('flashing-input', {
             'is-flashing': this.state.isFlashing,
@@ -62,7 +52,6 @@ class FlashingInput extends Component {
         return (
             <input
                 className={this.getClassName()}
-                style={this.getStyle()}
                 value={this.props.value}
                 onChange={this.props.onChange}
             />
