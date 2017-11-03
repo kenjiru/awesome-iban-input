@@ -4,6 +4,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import className from 'classnames';
 
+import SmartInput from '../smart-input/SmartInput';
+
 import './FlashingInput.scss';
 
 class FlashingInput extends Component {
@@ -50,7 +52,7 @@ class FlashingInput extends Component {
 
     render() {
         return (
-            <input
+            <SmartInput
                 className={this.getClassName()}
                 value={this.props.value}
                 onChange={this.props.onChange}

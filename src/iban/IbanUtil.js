@@ -1,6 +1,16 @@
+export const MAX_IBAN_LENGTH = 24;
 const GROUP_SIZE = 4;
 
+
 class IbanUtil {
+    static padWithZeroes(formattedIban) {
+        let ibanValue = IbanUtil.getIbanValue(formattedIban);
+
+        ibanValue = ibanValue.padEnd(MAX_IBAN_LENGTH, '0');
+
+        return IbanUtil.formatIbanValue(ibanValue);
+    }
+
     static formatIbanValue(ibanValue) {
         let formattedStr = '';
         const numGroups = ibanValue.length / GROUP_SIZE;

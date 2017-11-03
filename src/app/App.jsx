@@ -22,7 +22,7 @@ class App extends Component {
                 <p>Please enter the IBAN number:</p>
                 <Iban value={this.state.ibanValue} onChange={this.handleIbanChange} />
 
-                <p>Iban value: {this.state.ibanValue}</p>
+                <p>Iban value: {this.state.ibanValue}, length: {this.state.ibanValue.length}</p>
             </div>
         );
     }

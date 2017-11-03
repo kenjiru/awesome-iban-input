@@ -26,8 +26,7 @@ class Iban extends Component {
         }
     }
 
-    handleChange = (ev) => {
-        const formattedIban = ev.target.value;
+    handleChange = (formattedIban) => {
         const isValid = IbanUtil.isValid(formattedIban);
 
         this.setState({
@@ -39,7 +38,8 @@ class Iban extends Component {
                 formattedIban,
             });
 
-            const ibanValue = IbanUtil.getIbanValue(ev.target.value);
+            const ibanValue = IbanUtil.getIbanValue(formattedIban);
+
             this.props.onChange(ibanValue);
         }
     };
@@ -58,6 +58,7 @@ class Iban extends Component {
                 <FlashingInput
                     value={this.state.formattedIban}
                     onChange={this.handleChange}
+                    onTab={this.handleTab}
                     isValid={this.state.isValid}
                 />
                 {this.renderValidationWarning()}
