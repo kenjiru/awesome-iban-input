@@ -7,4 +7,6 @@ module.exports = function (config) {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
     });
-}
+
+    config.module.rules[0].use[0].options.useEslintrc = true;
+};
