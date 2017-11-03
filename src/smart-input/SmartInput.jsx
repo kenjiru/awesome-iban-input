@@ -29,6 +29,18 @@ class SmartInput extends Component {
         super(...args);
 
         this.paddingStart = NO_PADDING;
+        this.caretPosition = 0;
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value && this.paddingStart === NO_PADDING) {
+            if (IbanUtil.isEndOfGroup(this.caretPosition)) {
+                this.caretPosition += 1;
+            }
+
+            this.textInput.selectionStart = this.caretPosition;
+            this.textInput.selectionEnd = this.caretPosition;
+        }
     }
 
     getClassName() {
@@ -70,9 +82,15 @@ class SmartInput extends Component {
         const {paddingStart} = this;
         let {value} = ev.target;
 
+        if (value.length < this.props.value.length) {
+            this.paddingStart = NO_PADDING;
+        }
+
         if (paddingStart > NO_PADDING && value[paddingStart] === '0' && value.length > this.props.value.length) {
             value = SmartInput.removeCharAtPosition(value, paddingStart);
         }
+
+        this.caretPosition = ev.target.selectionStart;
 
         this.props.onChange(value);
     };
@@ -81,10 +99,13 @@ class SmartInput extends Component {
         return (
             <input
                 size={36}
-                className={this.getClassName()}
+                ref={(input) => {
+                    this.textInput = input;
+                }}
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
                 value={this.props.value}
+                className={this.getClassName()}
             />
         );
     }
