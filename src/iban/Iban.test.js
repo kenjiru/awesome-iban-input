@@ -47,9 +47,5 @@ describe('Iban component', () => {
 function simulateChange(output) {
     const input = output.find(FlashingInput);
 
-    input.simulate('change', {
-        target: {
-            value: IBAN_FORMATTED_2,
-        },
-    });
+    input.simulate('change', IBAN_FORMATTED_2);
 }

@@ -7,7 +7,6 @@ exports[`Iban component validates the snapshot 1`] = `
   <FlashingInput
     isValid={true}
     onChange={[Function]}
-    onTab={[Function]}
     value="AT00 0000"
   />
   <span />
