@@ -6,7 +6,7 @@ class App extends Component {
         super(props);
 
         this.state = {
-            ibanValue: 'AI1234567890',
+            ibanValue: '',
         };
     }
 
@@ -20,7 +20,7 @@ class App extends Component {
         return (
             <div className="App">
                 <p>Please enter the IBAN number:</p>
-                <Iban value={this.state.ibanValue} onChange={this.handleIbanChange}/>
+                <Iban value={this.state.ibanValue} onChange={this.handleIbanChange} />
 
                 <p>Iban value: {this.state.ibanValue}</p>
             </div>

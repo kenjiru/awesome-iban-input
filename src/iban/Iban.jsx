@@ -23,11 +23,36 @@ class Iban extends Component {
         return ibanString.replace(/\s*/g, '');
     }
 
+    static isValid(ibanStr) {
+        const firstTwoChars = ibanStr.substring(0, 2);
+        const remainingChars = ibanStr.substring(2);
+
+        return Iban.testFirstTwoChars(firstTwoChars) && Iban.testRemainingChars(remainingChars);
+    }
+
+    static testFirstTwoChars(firstTwoChars) {
+        if (firstTwoChars.length === 0) {
+            return true;
+        }
+
+        return /^[a-z A-Z]*$/.test(firstTwoChars);
+    }
+
+    static testRemainingChars(remainingChars) {
+        if (remainingChars.length === 0) {
+            return true;
+        }
+
+        return /^[0-9 ]*$/.test(remainingChars);
+    }
+
     constructor(props) {
         super(props);
 
+        const formattedIban = Iban.formatIbanValue(props.value);
+
         this.state = {
-            formattedIban: Iban.formatIbanValue(props.value),
+            formattedIban,
         };
     }
 
@@ -40,18 +65,36 @@ class Iban extends Component {
     }
 
     handleChange = (ev) => {
+        const formattedIban = ev.target.value;
+        const isValid = Iban.isValid(formattedIban);
+
         this.setState({
-            formattedIban: ev.target.value,
+            isValid,
         });
 
-        const ibanValue = Iban.getIbanValue(ev.target.value);
-        this.props.onChange(ibanValue);
+        if (isValid) {
+            this.setState({
+                formattedIban,
+            });
+
+            const ibanValue = Iban.getIbanValue(ev.target.value);
+            this.props.onChange(ibanValue);
+        }
     };
+
+    renderValidationWarning() {
+        if (this.state.isValid) {
+            return <span />;
+        }
+
+        return <span>Invalid</span>;
+    }
 
     render() {
         return (
             <div className="iban">
-                <input onChange={this.handleChange} value={this.state.formattedIban}/>
+                <input onChange={this.handleChange} value={this.state.formattedIban} />
+                {this.renderValidationWarning()}
             </div>
         );
     }
