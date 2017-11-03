@@ -1,59 +1,55 @@
 import React from 'react';
 import shallowToJson from 'enzyme-to-json';
 import {shallow} from 'enzyme';
+
+import FlashingInput from '../flashing-input/FlashingInput';
+
 import Iban from './Iban';
 
-describe('Iban component', () => {
-    it('should validate snapshot', () => {
-        const changeHandler = jest.fn();
+export const IBAN_VALUE = 'AT000000';
+export const IBAN_FORMATTED = 'AT00 0000';
 
-        const output = shallow(<Iban value="AT1231212312" onChange={changeHandler}/>);
+export const IBAN_VALUE_2 = 'AT001111';
+export const IBAN_FORMATTED_2 = 'AT00 1111';
+
+export const IBAN_FORMATTED_INVALID = 'AT00 A000';
+
+describe('Iban component', () => {
+    let changeHandler;
+    let output;
+
+    beforeAll(() => {
+        changeHandler = jest.fn();
+
+        output = shallow(<Iban value={IBAN_VALUE} onChange={changeHandler} />);
+    });
+
+    it('validates the snapshot', () => {
         expect(shallowToJson(output)).toMatchSnapshot();
     });
 
-    it('should use the correct transformation methods', () => {
-        const ibanValue = 'AT1234567890';
-        const ibanStr = 'AT12 3456 7890';
+    it('calls the onChange prop when the input changes', () => {
+        simulateChange(output);
 
-        expect(Iban.formatIbanValue(ibanValue)).toEqual(ibanStr);
-        expect(Iban.getIbanValue(ibanStr)).toEqual(ibanValue);
+        expect(changeHandler).toBeCalledWith(IBAN_VALUE_2);
     });
 
-    it('should call the onChange prop when the input changes', () => {
-        const initialIbanValue = 'AT1234567890';
-        const changedIbanStr = 'AT12 3456 1234';
-        const changedIbanValue = 'AT1234561234';
-
-        const changeHandler = jest.fn();
-
-        const output = shallow(<Iban value={initialIbanValue} onChange={changeHandler}/>);
-
-        const input = output.find('input');
-
-        expect(input).toBeDefined();
-
-        input.simulate('change', {
-            target: {
-                value: changedIbanStr,
-            },
-        });
-
-        expect(changeHandler).toBeCalledWith(changedIbanValue);
-    });
-
-    it('shoudl update the input when we receive a new value', () => {
-        const initialIbanValue = 'AT1234567890';
-        const changedIbanValue = 'AT1234561234';
-        const changedIbanStr = 'AT12 3456 1234';
-
-        const changeHandler = jest.fn();
-
-        const output = shallow(<Iban value={initialIbanValue} onChange={changeHandler}/>);
-
+    it('updates the input when we receive a new value', () => {
         output.setProps({
-            value: changedIbanValue,
+            value: IBAN_VALUE_2,
         });
 
-        expect(output.state().formattedIban).toEqual(changedIbanStr);
+        expect(output.state().formattedIban).toEqual(IBAN_FORMATTED_2);
     });
 });
+
+
+function simulateChange(output) {
+    const input = output.find(FlashingInput);
+
+    input.simulate('change', {
+        target: {
+            value: IBAN_FORMATTED_2,
+        },
+    });
+}

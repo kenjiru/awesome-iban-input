@@ -2,57 +2,15 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import FlashingInput from '../flashing-input/FlashingInput';
 
-const GROUP_SIZE = 4;
+import FlashingInput from '../flashing-input/FlashingInput';
+import IbanUtil from './IbanUtil';
 
 class Iban extends Component {
-    static formatIbanValue(ibanValue) {
-        let formattedStr = '';
-        const numGroups = ibanValue.length / GROUP_SIZE;
-
-        for (let i = 0; i < numGroups; i += 1) {
-            formattedStr += ibanValue.substring(i * GROUP_SIZE, (i + 1) * GROUP_SIZE);
-
-            if (i < numGroups - 1) {
-                formattedStr += ' ';
-            }
-        }
-
-        return formattedStr;
-    }
-
-    static getIbanValue(ibanString) {
-        return ibanString.replace(/\s*/g, '');
-    }
-
-    static isValid(ibanStr) {
-        const firstTwoChars = ibanStr.substring(0, 2);
-        const remainingChars = ibanStr.substring(2);
-
-        return Iban.testFirstTwoChars(firstTwoChars) && Iban.testRemainingChars(remainingChars);
-    }
-
-    static testFirstTwoChars(firstTwoChars) {
-        if (firstTwoChars.length === 0) {
-            return true;
-        }
-
-        return /^[a-z A-Z]*$/.test(firstTwoChars);
-    }
-
-    static testRemainingChars(remainingChars) {
-        if (remainingChars.length === 0) {
-            return true;
-        }
-
-        return /^[0-9 ]*$/.test(remainingChars);
-    }
-
     constructor(props) {
         super(props);
 
-        const formattedIban = Iban.formatIbanValue(props.value);
+        const formattedIban = IbanUtil.formatIbanValue(props.value);
 
         this.state = {
             formattedIban,
@@ -63,14 +21,14 @@ class Iban extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.value !== nextProps.value) {
             this.setState({
-                formattedIban: Iban.formatIbanValue(nextProps.value),
+                formattedIban: IbanUtil.formatIbanValue(nextProps.value),
             });
         }
     }
 
     handleChange = (ev) => {
         const formattedIban = ev.target.value;
-        const isValid = Iban.isValid(formattedIban);
+        const isValid = IbanUtil.isValid(formattedIban);
 
         this.setState({
             isValid,
@@ -81,7 +39,7 @@ class Iban extends Component {
                 formattedIban,
             });
 
-            const ibanValue = Iban.getIbanValue(ev.target.value);
+            const ibanValue = IbanUtil.getIbanValue(ev.target.value);
             this.props.onChange(ibanValue);
         }
     };
