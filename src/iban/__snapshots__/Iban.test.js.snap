@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Iban component should validate snapshot 1`] = `
+<div
+  className="iban"
+>
+  <input
+    onChange={[Function]}
+    value="AT12 3121 2312"
+  />
+</div>
+`;
