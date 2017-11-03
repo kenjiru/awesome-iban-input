@@ -1,8 +1,14 @@
 export const MAX_IBAN_LENGTH = 24;
-const GROUP_SIZE = 4;
+export const MAX_FORMATTED_IBAN_LENGTH = MAX_IBAN_LENGTH + 5;
 
+export const GROUP_SIZE = 4;
+export const FORMATTED_GROUP_SIZE = GROUP_SIZE + 1;
 
 class IbanUtil {
+    static isEndOfGroup(position) {
+        return position % FORMATTED_GROUP_SIZE === 0;
+    }
+
     static padWithZeroes(formattedIban) {
         let ibanValue = IbanUtil.getIbanValue(formattedIban);
 
@@ -34,7 +40,8 @@ class IbanUtil {
         const firstTwoChars = ibanStr.substring(0, 2);
         const remainingChars = ibanStr.substring(2);
 
-        return IbanUtil.testFirstTwoChars(firstTwoChars) &&
+        return ibanStr.length <= MAX_FORMATTED_IBAN_LENGTH &&
+            IbanUtil.testFirstTwoChars(firstTwoChars) &&
             IbanUtil.testRemainingChars(remainingChars);
     }
 
